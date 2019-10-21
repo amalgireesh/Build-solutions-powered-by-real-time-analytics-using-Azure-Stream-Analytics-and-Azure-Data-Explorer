@@ -1,4 +1,4 @@
-#  Build massive and lightning-fast analytics solutions with Azure Data Explorer  
+#  Build-solutions-powered-by-real-time-analytics-using-Azure-Stream-Analytics-and-Azure-Data-Explorer
  
 Looking to help your customers make business decisions with immediate impact based on real-time terabyte/petabyte of data in seconds? In this session, you will build a near-real-time analytical solution with Azure Data Explorer (ADX), which supports interactive adhoc queries of terabyte/petabyte data.  
  
@@ -140,11 +140,11 @@ Rendered ordered list
 3.Click **Create**.
 
 ### Configure job input
-1.In the dashboard or the **All resources** pane, find and select the **asa_nyctaxi** Stream Analytics job.
+1. In the dashboard or the **All resources** pane, find and select the **asa_nyctaxi** Stream Analytics job.
 
-2.In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
+2. In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
 
-3.Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
+3. Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
 
  | Setting                      | Value                         | Description                                                          |                                                                                                                                                                               
  | ---------------------------- |-------------------------------| -------------------------------------------------------------------- |
@@ -153,6 +153,77 @@ Rendered ordered list
  |**Event Hub namespace**       |**predefined EH namespace**    |Enter the name of the Event Hub namespace.                            |
  |**Event Hub name**            |**predefined EH for ASA**      |Select the name of your Event Hub.|
  |**Event Hub policy name**     |**predefined policy**          |Select the access policy that you created earlier.|	
+ 
+ 4. Click **Create**.
+ 
+ ### Create queries to transform real-time data
+ 
+ At this point, you have a Stream Analytics job set up to read an incoming data stream. The next step is to create a query that analyzes the data in real time. Stream Analytics supports a simple, declarative query model that describes transformations for real-time processing. The queries use a SQL-like language that has some extensions specific to Stream Analytics.
+ 
+ You will use the query below as part of this exercise. This query calculates the average passenger count and average trip duration. In a later section, you'll configure an output sink and a query that writes the transformed data to that sink.
+ 
+ Select “*Query*” under Job Topology and paste the following in the query text box.
+ 
+ ```
+ --SELECT all relevant fields from TaxiRide Streaming input
+ WITH 
+TripData AS (
+    SELECT TRY_CAST(pickupLat AS float) as pickupLat,
+    TRY_CAST(pickupLon AS float) as pickupLon,
+    passengerCount, TripTimeinSeconds, 
+    pickupTime, VendorID
+    FROM TaxiRide timestamp by pickupTime
+    WHERE pickupLat > -90 AND pickupLat < 90 AND pickupLon > -180 AND pickupLon < 180
+)
+
+SELECT avg(passengerCount) as AvgPassenger, avg(TripTimeinSeconds) as TripTimeinSeconds, system.timestamp as timestamps
+INTO pbioutput
+FROM TripData Group By VendorId,tumblingwindow(minute,1)
+
+ ```
+ 
+ Once you have saved this query, you can test it against sample input data. You can obtain sample input data by selecting ‘Reset’. This looks for input data from event hub and shows it in the bottom pane.
+ <image>
+
+Once you can see data under “Input preview”, you can select **Test query**. The output will be displayed in “Test results”. When you have the query producing the expected results for test data, you can configure an output. When your job runs in the cloud, this is the destination which it will write the results to in real-time.
+
+For this example, we will add a PowerBI output to your job and create a real-time dashboard that visualizes average passenger count over time.
+
+ 1. On the left menu, select Outputs under Job topology. Then, select + Add and choose Power BI from the dropdown menu.
+ 2. Select + Add > Power BI. Then fill the form with the following details and select **Authorize**:
+ 
+ | **Setting** | **Second Header** |
+| ------------- | ---------------- |
+| Output alias  | pbioutput        |
+| Dataset name  | nyctaxi          | 
+| Table name    | nyctaxi-table    | 
+
+<image>
+	
+3. When you select **Authorize**, a pop-up window opens and you are asked to provide credentials to authenticate to your Power BI account. Once the authorization is successful, **Save** the settings.
+4. Click Create.
+	
+### Run the job
+Navigate to the **Overview** page for your Stream Analytics job and select **Start**. It will take a minute or two for the job to start running in the cloud. Once it is running, it is continuously reading and processing input events flowing in from your event hub. In our case, it is continuously calculating the average passenger count and writing it to a streaming dataset in Power BI.
+
+#### Create the dashboard in Power BI
+1. Go to [Powerbi.com](https://powerbi.com/) and sign in with your work or school account. If the Stream Analytics job query outputs results, you see that your dataset is already created (under “Datasets” you should be able to see ‘***nyctaxi***’)
+2. In your workspace, click **+ Create**.
+<image>
+	
+3. Create a new dashboard and name it **NYC Taxi**.	
+<image>
+	
+4. At the top of the window, click **Add tile**, select **CUSTOM STREAMING DATA**, and then click **Next**.
+<image>
+	
+5. Under **YOUR DATSETS**, select your dataset and then click **Next**.	
+<image>	
+	  
+6. Under **Visualization Type**, select **Card**, and then in the **Fields** list, select **AvgPassenger**.
+7. Click **Next**.
+8. Fill in tile details like a title and subtitle and click **Apply**. Now you have a visualization for average no. of passengers in a trip.You can try playing around by creating a line chart which plots average passenger count over a period of time (x axis: timestamps and y axis: AvgPassenger).
+
 ### Results  
 1. SampleTable | count 
 
