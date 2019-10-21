@@ -137,20 +137,16 @@ Trips
 3.Click **Create**.
 
 ### Configure job input
-
-1.In the dashboard or the **All resources** pane, find and select the **asa_nyctaxi** Stream Analytics job.
-2.In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
-3.Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
+   1.In the dashboard or the **All resources** pane, find and select the **asa_nyctaxi** Stream Analytics job.
+   2.In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
+   3.Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
 
  | Setting                      | Value                     | Description                                                                                                                                                                                                                            
    | ------------------------- |----------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- | **Input alias**           | **TaxiRide**                                               |Enter a name to identify the job’s input.                    
-     | ------------------------- |----------------------------| 
- | **Subscription**           | **<Your subscription>**                                   |Enter a name to identify the job’s input.                                                                                                                                                |
- | **Subscription**           | **<Your subscription>**                                   |Enter a name to identify the job’s input.                                                                                                                                                |
- | **Event Hub namespace**           | **<predefined EH namespace>**                      |Enter the name of the Event Hub namespace.                                                                                                                                               |
- | **Event Hub name**           | **<predefined EH for ASA>**                           |Select the name of your Event Hub.                                                                                                                                                         |
- | **Event Hub policy name**           | **<predefined policy>**                           |Select the access policy that you created earlier.                                                                                                                                     |
+ | **Input alias**           | **TaxiRide**                                   |Enter a name to identify the job’s input.                    
+ |**Subscription**          | **<Your subscription>**                        |Select the Azure subscription that has the Event Hub you |
+ | **Event Hub namespace**           |**<predefined EH namespace>**                              |Enter a name to identify the job’s input.  	
+	
 ### Results  
 1. SampleTable | count 
 
