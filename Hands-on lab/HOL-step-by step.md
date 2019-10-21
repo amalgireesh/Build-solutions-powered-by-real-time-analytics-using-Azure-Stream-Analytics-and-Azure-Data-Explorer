@@ -93,16 +93,15 @@ Open Lab from http://bit.ly/2WCFDdz if you haven't registered for lab already.
  
 -  | **parse** Col1 with <pattern>…
 	Deals with unstructured data  
-### 9.Questions 
+### 9. Questions 
  
    1.How many rows Trips table contain?
-2. Add calculated column of Transaction Id from column RawHeader: attribute Id
-3. Take a 10 row sample of RawHeader 
-4. How many records were ingested from version 1 and 2?
-5. Create a time chart with 10 minute bins of RawHeader['time']
-6. Drop table SampleTable
-7. Run.show queries  	
-	
+ ```  
+// The trace table contains 175698341 records    
+Trips
+| count
+ ``` 
+
  
 ### Results  
 1. SampleTable | count 
