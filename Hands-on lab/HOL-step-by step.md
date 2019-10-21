@@ -52,65 +52,14 @@ Open Lab from http://bit.ly/2WCFDdz if you haven't registered for lab already.
  5. Select **Databases** from the left-hand menu, under **Data** , and then select **+Add Database** . 
    
        ![Create a new database in the cluster.](media/image05.png)  
-    
- 6. In the **Azure Data Explorer Database** window:  
-    
-       ![adding parameters to the database.](media/image06.png)
-    
-      - **Database name**: **<alias>_adxdb** 
-      - **Retention period** (cold compressed data (Azure Blob Storage) : **365**
-      - **Cache period**(hot compressed data (SSD)): **31**
  
- 7. In **Databases**, select your new **alias_adxdb database** and Select **Query**
+ 6. In **Databases**, select your **SAADXWorkshop** and Select **Query**
  
    ![writing Query fo the data ingestion section.](media/image07.png)
    
- 8. In the Web UI, create a table 
-  ```
-  // Create a table
-  .create table SampleTable
-  (Timestamp:datetime, ApiVersion:string, User:string, RawHeader:dynamic)
-```  
-
-## Ingestion
-
+ 7. In the Web UI, select **Open on Web UI**
   
-   ![Writing Query for data ingestion mapping etc.](media/image08.png)
-  
-1. Create table mapping  
-```
-// Create a Json ingestion mapping
-.create table SampleTable ingestion json mapping 
-"Mapping01" '[{"column":"Timestamp","path":"$.header.time"},{"column":"ApiVersion","path":"$.header.api_version"},{"column":"RawHeader","path":"$.header"},{"column":"User","path":"$.payload.user"}]'
-```
-
-2. View ingestion mapping 
- ```
- // View ingestion mappings
-.show table SampleTable ingestion json mappings  
- ```
- 
-3. Ingestion from public blob 
- ``` 
- // Ingest from public blob
- .ingest into table SampleTable
- @'https://westuskustopublic.blob.core.windows.net/public/SampleData-500-4394582f-668f-4d03-8bba-58f87a7e48a0.json' with (jsonMappingReference = "Mapping01")  
-   ```  
-  > **Note**: Should follow the query syntax.
-
-## Exploration 
-### Questions 
- 
-If you skipped the previous step(s), please click on database: **text**. 
-
-1. How many lines were ingested? 
-2. Add calculated column of Transaction Id from column RawHeader: attribute Id
-3. Take a 10 row sample of RawHeader 
-4. How many records were ingested from version 1 and 2?
-5. Create a time chart with 10 minute bins of RawHeader['time']
-6. Drop table SampleTable
-7. Run.show queries  
-
+## Pre-Exploration 
 ### Kusto Query Language (KQL) 
 -  | **count**	
   Counts records in input table (e.g. T)  
@@ -144,6 +93,16 @@ If you skipped the previous step(s), please click on database: **text**.
  
 -  | **parse** Col1 with <pattern>…
 	Deals with unstructured data  
+### 9.Questions 
+ 
+   1.How many rows Trips table contain?
+2. Add calculated column of Transaction Id from column RawHeader: attribute Id
+3. Take a 10 row sample of RawHeader 
+4. How many records were ingested from version 1 and 2?
+5. Create a time chart with 10 minute bins of RawHeader['time']
+6. Drop table SampleTable
+7. Run.show queries  	
+	
  
 ### Results  
 1. SampleTable | count 
