@@ -93,7 +93,8 @@ Open Lab from http://bit.ly/2WCFDdz if you haven't registered for lab already.
  
 -  | **parse** Col1 with <pattern>…
 	Deals with unstructured data  
-### 9. Questions 
+	
+ ### 9. Questions 
  
    1.How many rows Trips table contain?
  ```  
@@ -101,8 +102,55 @@ Open Lab from http://bit.ly/2WCFDdz if you haven't registered for lab already.
 Trips
 | count
  ``` 
+   2.Take a 10 row sample of Trips
+ ```  
+// Sample Trips lines 
+Trips
+| take 10
+``` 
+  3.Query trips distribution for 60 days by pickup datetime, start on 2017-12-01.
+ ```
+// Trips distribution for 60 days, by Pickup time
+Trips
+| where pickup_datetime between (datetime(2017-12-01) .. 60d)
+| summarize count() by bin(pickup_datetime, 1d)
+| render timechart
+ ```
+ 4.Query the min and max pickup datetime 
+  ```
+ // The newest and the oldest trip by pickup datetime 
+Trips
+| summarize min(pickup_datetime), max(pickup_datetime)
+ ```
+ 5.Query passenger 50, 90 and 99 percentiles 
+  ```
+ // The passenger count per percentiles  
+Trips
+| summarize percentiles(passenger_count, 50, 90, 99)
+  ```
+## Stream Analytics
 
- 
+### Create the job
+1.In the Azure portal, click **Create a resource > Internet of Things > Stream Analytics job**.
+2.Name the job **asa_nyctaxi**, specify a subscription, resource group, and location.
+  > **Note**: It's a good idea to place the job and the event hub in the same region for best performance and so that you don't pay to transfer data between regions.
+3.Click **Create**.
+
+### Configure job input
+
+1.In the dashboard or the **All resources** pane, find and select the **asa_nyctaxi** Stream Analytics job.
+2.In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
+3.Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
+
+ | Setting                      | Value                     | Description                                                                                                                                                                                                                            
+   | ------------------------- |----------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+ | **Input alias**           | **TaxiRide**                                               |Enter a name to identify the job’s input.                    
+     | ------------------------- |----------------------------| 
+ | **Subscription**           | **<Your subscription>**                                   |Enter a name to identify the job’s input.                                                                                                                                                |
+ | **Subscription**           | **<Your subscription>**                                   |Enter a name to identify the job’s input.                                                                                                                                                |
+ | **Event Hub namespace**           | **<predefined EH namespace>**                      |Enter the name of the Event Hub namespace.                                                                                                                                               |
+ | **Event Hub name**           | **<predefined EH for ASA>**                           |Select the name of your Event Hub.                                                                                                                                                         |
+ | **Event Hub policy name**           | **<predefined policy>**                           |Select the access policy that you created earlier.                                                                                                                                     |
 ### Results  
 1. SampleTable | count 
 
