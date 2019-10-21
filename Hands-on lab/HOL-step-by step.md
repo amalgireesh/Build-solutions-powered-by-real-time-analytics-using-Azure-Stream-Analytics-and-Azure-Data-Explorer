@@ -224,65 +224,37 @@ Navigate to the **Overview** page for your Stream Analytics job and select **Sta
 7. Click **Next**.
 8. Fill in tile details like a title and subtitle and click **Apply**. Now you have a visualization for average no. of passengers in a trip.You can try playing around by creating a line chart which plots average passenger count over a period of time (x axis: timestamps and y axis: AvgPassenger).
 
-### Results  
-1. SampleTable | count 
+## Post-Exploration
+### Questions
+1. What was the fare amount of the last trip which pass the 90 percentiles? 
+ ```
+ Trips
+| where passenger_count > 4
+| top 1 by pickup_datetime
+| project fare_amount, vendor_id, passenger_count
 
-2. SampleTable | extend TransactionId = RawHeader.id
-
-3. SampleTable
-| extend TransactionId = RawHeader.id  
-| take 10 
-
-4. Option 1  
-
-    a. SampleTable  
-    
-      | extend recordversion =  tostring(RawHeader.api_version)  
-      | summarize count() by recordversion 
-      
-    b. SampleTable
-    
-      | where tostring(RawHeader.api_version) has "1" 
-    
-5. SampleTable  
-| extend x = todatetime(RawHeader['time'])  
-| summarize count() by bin(x, 10m)  
-| render timechart  
-
-6. Drop table  
-// Drop the table  
-.drop table SampleTable  
-
-7. Show queries  
-.show queries  
-
+ ```
+ 2. What was the fare amount for the trip with the max passenger count?
+  ```
+  Trips
+| where passenger_count > 4
+| top 1 by passenger_count
+| project fare_amount, vendor_id, passenger_count
+```
+  3. How many trips this vendor has? 
+  ```
+  Trips
+| summarize count() by vendor_id
+----
+Trips
+| where vendor_id == 2
+| count
+  ```
 ## Self-Study  
   
 ### Kusto Query Language (KQL)  
 
-We’ll use GitHub public data to query using Azure Data Explorer (Kusto) and visualize using Power BI.  
-
-1. Open the Browser in the Virtual Machine and connect with the temporary Lab user credentials.  
-
-![+ Create a resource is highlighted in the navigation pane of the Azure portal, and Everything is highlighted to the right..](media/image01.png "Azure Portal")
- 
-2. Open <https://dataexplorer.azure.com/clusters/demo12.westus/databases/GitHub>  
-  - Cluster URL: <http://demo12.westus.kusto.windows.net>  
-  - Database: GitHub  
-  
- please email tzgitlin@microsoft.com to get temporary permission on GitHub cluster
-### Questions to try out (answer at the bottom)  
-a.  Questions to try out  
-
-1. What was the date yesterday?  
-2. <span style="font-size:16px;">How many events were in the last 600 days?</span> 
-3. Take a sample of 10 rows of your data?  
-4. What is the number of Repos overall?  
-5. What is the number of unique Repos values?  
-6. What is the number  of unique Repos names?  
-7. How many Torvalds are there? How many events did they produce?  
-8. What are the top 10 most watched Repos?  
-9. (**) Plot the history of all of the events for the past 2 years for Repos from #9. 
+Free online Course – Basics of KQL - Http://aka.ms/KQLPluralsight
 
 ## Power BI  
 Power BI is used to visualize the data. Note that Power BI is a visualization tool with data size limitations. Default: 500,000 records and 700MB data size. 
