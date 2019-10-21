@@ -144,8 +144,8 @@ Trips
  | Setting                      | Value                     | Description                                                                                                                                                                                                                            
    | ------------------------- |----------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
  | **Input alias**           | **TaxiRide**                                   |Enter a name to identify the job’s input.                    
- |**Subscription**          | **<Your subscription>**                        |Select the Azure subscription that has the Event Hub you |
- | **Event Hub namespace**           |**<predefined EH namespace>**                              |Enter a name to identify the job’s input.  	
+ |**Subscription**           | **<Your subscription>**                        |Select the Azure subscription that has the Event Hub you |
+ |**Event Hub namespace**           |**<predefined EH namespace>**             |Enter a name to identify the job’input.  	
 	
 ### Results  
 1. SampleTable | count 
