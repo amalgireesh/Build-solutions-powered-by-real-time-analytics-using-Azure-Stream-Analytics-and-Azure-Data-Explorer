@@ -141,12 +141,13 @@ Trips
    2.In the **Overview** section of the Stream Analytics job pane, click the **Input** box.
    3.Click **Add stream input** and select **Event Hub**. Then fill the New input page with the following information:
 
- | Setting                      | Value                     | Description                                                                                                                                                                                                                            
-   | ------------------------- |----------------------------| -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
- | **Input alias**           | **TaxiRide**                                   |Enter a name to identify the job’s input.                    
- |**Subscription**           | **<Your subscription>**                        |Select the Azure subscription that has the Event Hub you |
- |**Event Hub namespace**           |**<predefined EH namespace>**             |Enter a name to identify the job’input.  	
-	
+ | Setting                      | Value                         | Description                                                          |                                                                                                                                                                               
+ | ---------------------------- |-------------------------------| -------------------------------------------------------------------- |
+ | **Input alias**              | **TaxiRide**                  |Enter a name to identify the job’s input.                             |   
+ |**Subscription**              | **Your subscription**         |Select the Azure subscription that has the Event Hub you have created | 
+ |**Event Hub namespace**       |**predefined EH namespace**    |Enter the name of the Event Hub namespace.                            |
+ |**Event Hub name**            |**predefined EH for ASA**      |Select the name of your Event Hub.|
+ |**Event Hub policy name**     |**predefined policy**          |Select the access policy that you created earlier.|	
 ### Results  
 1. SampleTable | count 
 
